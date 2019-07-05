@@ -9,3 +9,5 @@ const PriceSchema = new Schema({
     Price: Number
 })
 const PriceModel = mongoose.model('price',PriceSchema)
+
+module.exports = {PriceModel}

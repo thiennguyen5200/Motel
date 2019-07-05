@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {Motel} = require('../models/motel.model')
+const {Motel} = require('../repositorys/Motel.repository')
 
 router.post('/create',(req,res)=>{
     const author = req.idUser
@@ -20,8 +20,8 @@ router.post('/create',(req,res)=>{
 
 router.post('/update',(req,res)=>{
     const author = req.idUser
-    const {_id,motel_name,address,county,city,district} = req.body
-    Motel.updateMotel(author,_id,motel_name,address,county,city,district)
+    const {_id,motel_name,address,county,city,district,status} = req.body
+    Motel.updateMotel(author,_id,motel_name,address,county,city,district,status)
     .then(motel=>res.send({
         code:1,
         data:motel,

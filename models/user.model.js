@@ -1,7 +1,5 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const {hash, compare} = require('../lib/bcrypt')
-const {sign} = require('../lib/jwt')
 
 const UserSchema = new Schema({
     email:{
@@ -13,7 +11,7 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    lever: Number,
+    level: Number,
     avatar:{
         type: String,
         default:'user-default.png'
@@ -44,42 +42,9 @@ const UserSchema = new Schema({
     create_date:{
         type: Date,
         default: Date.now
-    }
+    },
+    create_by: String
 })
 const UserModel = mongoose.model('user',UserSchema)
 
-class User{
-    static async signUp(email, password, name, card_id){
-        const passwordHash = await hash(password)
-        if(!passwordHash) throw new Error('Cannot create user!')
-        const user = await UserModel.create({ email, password: passwordHash, name, card_id })
-        if(!user) throw new Error('Cannot create user!')
-        return {
-            _id: user._id,
-            email: user.email,
-            name: user.name,
-            avatar: user.avatar,
-            card_id: user.card_id
-        }
-    }
-    static async signIn(email, password){
-        const user = await UserModel.findOne({email})
-        if(!user) throw new Error('Cannot find user!')
-        const check = await compare(user.password, password)
-        if(!check) throw new Error('Password invalid!')
-        const token = await sign({_id: user._id})
-        if(!token) throw new Error('Cannot sign token!')
-        return {
-            user:{
-                _id: user._id,
-                email: user.email,
-                name: user.name,
-                avatar: user.avatar,
-                card_id: user.card_id
-            }
-        },
-        token
-    }
-}
-
-module.exports = { UserModel, User }
+module.exports = { UserModel }

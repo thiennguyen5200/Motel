@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {User} = require('../models/user.model')
+const {User} = require('../repositorys/User.ropository')
 
 router.get('/register',(req,res)=>{
     res.send({
@@ -38,4 +38,19 @@ router.post('/login',(req,res)=>{
         message: err.message
     }))
 })
+
+router.get('/', (req,res)=>{
+    User.getAllUser()
+    .then(user => res.send({
+        code: 1,
+        data: user,
+        message: ''
+    }))
+    .catch(err => res.send({
+        code: 0,
+        data: null,
+        message: err.message
+    }))
+})
+
 module.exports = router
