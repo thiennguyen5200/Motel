@@ -36,7 +36,10 @@ class User{
     }
     static async getAllUser(){
         const users = await UserModel.find({})
-        return users
+        if(users !== null){
+            return users
+        }
+        throw new Error ('LIST_USER_IS_NULL!')
     }
 }
 module.exports = { User }
